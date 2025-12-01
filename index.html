@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>CareerCraft — By WAVECRAFT</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <div class="bg-animated"></div>
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo-blob">CC</div>
+      <div class="brand-text">
+        <div class="title">CareerCraft</div>
+        <div class="subtitle">A Career Toolkit by WAVECRAFT</div>
+      </div>
+    </div>
+
+    <nav class="top-actions">
+      <button class="ghost" id="openAbout">About</button>
+      <button class="ghost">Demo Mode</button>
+      <button class="cta" onclick="toast('Good luck with your demo, Guruhari!')">Quick Tip</button>
+    </nav>
+  </header>
+
+  <!-- MAIN LAYOUT -->
+  <main class="workspace">
+
+    <!-- LEFT SIDEBAR -->
+    <aside class="left-panel">
+      <div class="panel-inner">
+
+        <div class="menu">
+          <button class="menu-btn active" data-target="resume">
+            <span class="i">📄</span><span class="label">Resume Analyzer</span>
+          </button>
+
+          <button class="menu-btn" data-target="keywords">
+            <span class="i">🔎</span><span class="label">Keyword Finder</span>
+          </button>
+
+          <button class="menu-btn" data-target="interview">
+            <span class="i">🎙️</span><span class="label">Interview Trainer</span>
+          </button>
+
+          <button class="menu-btn" data-target="profile">
+            <span class="i">🧾</span><span class="label">Profile Enhancer</span>
+          </button>
+        </div>
+
+        <div class="panel-cta">
+          <div class="stat">
+            <div class="num" id="quickScore">—%</div>
+            <div class="caption">Live Score</div>
+          </div>
+          <div class="note">Minimal, fast & student-friendly</div>
+        </div>
+
+      </div>
+    </aside>
+
+    <!-- CENTER CONTENT -->
+    <section class="content">
+
+      <!-- RESUME ANALYZER -->
+      <section id="panel-resume" class="card active-card">
+        <div class="card-head">
+          <h2>Resume Analyzer</h2>
+          <div class="meta">Scan resume → score + suggestions</div>
+        </div>
+
+        <div class="card-body">
+          <textarea id="resumeInput" rows="6" placeholder="Paste your resume text here..."></textarea>
+
+          <div class="controls">
+            <div class="left-controls">
+              <button id="analyzeBtn" class="btn-gradient">Analyze</button>
+              <button id="clearResume" class="btn-ghost">Clear</button>
+            </div>
+
+            <div class="right-controls">
+              <div class="muted small">Words: <span id="wordCount">0</span></div>
+              <div id="resumeScore" class="pill">Score: —</div>
+            </div>
+          </div>
+
+          <div id="resumeResult" class="result"></div>
+        </div>
+      </section>
+
+      <!-- KEYWORD FINDER -->
+      <section id="panel-keywords" class="card">
+        <div class="card-head">
+          <h2>Job Keyword Finder</h2>
+          <div class="meta">Enter role → get important skills</div>
+        </div>
+
+        <div class="card-body">
+          <div class="inline">
+            <input id="jobTitle" placeholder='e.g., "software engineer"'>
+            <button id="findKeywords" class="btn-gradient">Find</button>
+          </div>
+
+          <div id="keywordsResult" class="result"></div>
+        </div>
+      </section>
+
+      <!-- INTERVIEW TRAINER -->
+      <section id="panel-interview" class="card">
+        <div class="card-head">
+          <h2>Interview Trainer</h2>
+          <div class="meta">Practice questions</div>
+        </div>
+
+        <div class="card-body">
+          <div class="inline">
+            <select id="qCategory">
+              <option value="hr">HR</option>
+              <option value="technical">Technical</option>
+              <option value="behavioral">Behavioral</option>
+            </select>
+
+            <button id="startQ" class="btn-gradient">Start</button>
+            <button id="nextQ" class="btn-ghost" style="display:none">Next</button>
+
+            <div class="muted small">Favorites: <span id="favCount">0</span></div>
+          </div>
+
+          <div id="questionCard" class="qcard">
+            <div class="qlabel small muted">Question</div>
+            <div id="qText" class="qtext">Tap <strong>Start</strong> to begin</div>
+
+            <div class="qactions">
+              <button class="fav" id="favToggle">&#9734;</button>
+              <div style="flex:1"></div>
+
+              <div class="small muted">Self-rate</div>
+              <button class="copy-btn" data-rate="1">Poor</button>
+              <button class="copy-btn" data-rate="2">Average</button>
+              <button class="copy-btn" data-rate="3">Good</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PROFILE ENHANCER -->
+      <section id="panel-profile" class="card">
+        <div class="card-head">
+          <h2>Profile Enhancer</h2>
+          <div class="meta">Generate headline & About Me</div>
+        </div>
+
+        <div class="card-body">
+          <div class="inline">
+            <select id="roleSelect"></select>
+            <button id="generateProfile" class="btn-gradient">Generate</button>
+            <button id="copyAll" class="btn-ghost">Copy All</button>
+          </div>
+
+          <div id="profileResult" class="result"></div>
+        </div>
+      </section>
+
+    </section>
+
+    <!-- RIGHT PANEL -->
+    <aside class="right-panel">
+      <div class="floating-card">
+        <div class="float-title">Demo Controls</div>
+        <div class="float-body">
+          <div class="mini muted">Load sample resume</div>
+          <button class="mini-btn"
+            onclick="resumeInput.value='John Doe\nExperience: XYZ\nSkills: Dart, Flutter'; wordCountEl.textContent=9; toast('Demo Loaded')">Load
+            Demo</button>
+        </div>
+      </div>
+    </aside>
+
+  </main>
+
+  <!-- ABOUT MODAL -->
+  <div id="aboutPanel" class="about-overlay">
+    <div class="about-card">
+      <h2>About CareerCraft</h2>
+
+      <p class="muted">
+        CareerCraft is a simple, fast, student-friendly toolkit that helps:
+      </p>
+
+      <ul class="about-list">
+        <li>✔ Analyze your resume and detect missing sections</li>
+        <li>✔ Generate job-specific keywords</li>
+        <li>✔ Practice interview questions</li>
+        <li>✔ Generate profile headlines & About-Me text</li>
+      </ul>
+
+      <h3 style="margin-top:18px;">Made By</h3>
+      <p><strong style="color:#d3b17a;">WAVECRAFT</strong></p>
+      <p><strong style="color:#d3b17a;">-A brand owned by Mr.Guruhari</strong></p>
+
+      <p class="muted small">
+        Built using pure HTML, CSS & JavaScript.
+      </p>
+
+      <button id="closeAbout" class="btn-gradient" style="width:100%;margin-top:20px;">
+        Close
+      </button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+
+</html>
