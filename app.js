@@ -194,7 +194,7 @@ if (analyzeBtn) {
            </div>
          `;
       const response = await fetch(
-        "http://localhost:8080/api/ai/resume-analysis",
+        "{backend-api-url}/api/ai/resume-analysis",
         {
           method: "POST",
           headers: {
@@ -276,7 +276,7 @@ if (uploadBtn) {
            </div>
          `;
       const response = await fetch(
-        "http://localhost:8080/api/resume/upload",
+        "{backend-api-url}/api/ai/resume-analysis",
         {
           method: "POST",
           body: formData
