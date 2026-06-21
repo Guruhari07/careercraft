@@ -80,10 +80,32 @@
         <div class="card-body">
           <textarea id="resumeInput" rows="6" placeholder="Paste your resume text here..."></textarea>
 
+          <div style="margin-top:15px;">
+            <label style="display:block;margin-bottom:8px;">
+              Upload Resume PDF
+            </label>
+
+            <input
+                    type="file"
+                    id="resumeFile"
+                    accept=".pdf">
+          </div>
+
           <div class="controls">
             <div class="left-controls">
-              <button id="analyzeBtn" class="btn-gradient">Analyze</button>
-              <button id="clearResume" class="btn-ghost">Clear</button>
+
+              <button id="analyzeBtn" class="btn-gradient">
+                Analyze Text
+              </button>
+
+              <button id="uploadBtn" class="btn-gradient">
+                Upload PDF
+              </button>
+
+              <button id="clearResume" class="btn-ghost">
+                Clear
+              </button>
+
             </div>
 
             <div class="right-controls">
@@ -202,13 +224,14 @@
         <li>✔ Generate profile headlines & About-Me text</li>
       </ul>
 
-      <h3 style="margin-top:18px;">Made By</h3>
-      <p><strong style="color:#d3b17a;">WAVECRAFT</strong></p>
-      <p><strong style="color:#d3b17a;">-A brand owned by Mr.Guruhari</strong></p>
+       <h3 style="margin-top:18px;">Made By</h3>
+       <p><strong style="color:#d3b17a;">WAVECRAFT</strong></p>
+       <p><strong style="color:#d3b17a;">-A brand owned by Mr.Guruhari,</strong></p>
+       <p><strong style="color:#d3b17a;">-Helped by Mr.Senthilkumar,</strong></p>
 
-      <p class="muted small">
-        Built using pure HTML, CSS & JavaScript.
-      </p>
+       <p class="muted small">
+         Built using pure HTML, CSS & JavaScript.
+       </p>
 
       <button id="closeAbout" class="btn-gradient" style="width:100%;margin-top:20px;">
         Close

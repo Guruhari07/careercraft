@@ -100,6 +100,8 @@ const resumeScore = document.getElementById('resumeScore');
 const quickScore = document.getElementById('quickScore');
 const wordCountEl = document.getElementById('wordCount');
 const clearResume = document.getElementById('clearResume');
+const resumeFile = document.getElementById('resumeFile');
+const uploadBtn = document.getElementById('uploadBtn');
 
 const jobTitle = document.getElementById('jobTitle');
 const findBtn = document.getElementById('findKeywords');
@@ -171,15 +173,163 @@ function renderResumeResult({ score, missing, words }) {
 }
 
 if (analyzeBtn) {
-  analyzeBtn.addEventListener('click', () => {
-    const text = resumeInput ? resumeInput.value : '';
-    const res = analyzeResume(text);
-    if (resumeScore) resumeScore.textContent = `Score: ${res.score}%`;
-    if (quickScore) quickScore.textContent = `${res.score}%`;
-    if (wordCountEl) wordCountEl.textContent = res.words;
-    renderResumeResult(res);
+
+  analyzeBtn.addEventListener('click', async () => {
+
+    const text = resumeInput.value;
+
+    if (!text.trim()) {
+      alert("Please enter resume text");
+      return;
+    }
+
+    try {
+         resumeScore.textContent = "Analyzing...";
+         quickScore.textContent = "...";
+
+         resumeResult.innerHTML = `
+           <div style="text-align:center;padding:20px;">
+             <h3>🤖 AI Resume Analysis in Progress</h3>
+             <p>Please wait while Gemini analyzes your resume...</p>
+           </div>
+         `;
+      const response = await fetch(
+        "http://localhost:8080/api/ai/resume-analysis",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            resumeText: text
+          })
+        }
+      );
+
+      const data = await response.json();
+
+      resumeScore.textContent =
+        `Score: ${data.atsScore}%`;
+
+      quickScore.textContent =
+        `${data.atsScore}%`;
+
+      resumeResult.innerHTML = `
+        <h3>Strengths</h3>
+        <ul>
+          ${data.strengths
+            .map(item => `<li>${item}</li>`)
+            .join("")}
+        </ul>
+
+        <h3>Weaknesses</h3>
+        <ul>
+          ${data.weaknesses
+            .map(item => `<li>${item}</li>`)
+            .join("")}
+        </ul>
+
+        <h3>Suggestions</h3>
+        <ul>
+          ${data.suggestions
+            .map(item => `<li>${item}</li>`)
+            .join("")}
+        </ul>
+      `;
+
+    } catch (error) {
+
+      console.error(error);
+
+      resumeResult.innerHTML =
+        "<p>Failed to connect to AI backend</p>";
+    }
+
   });
+
 }
+
+
+if (uploadBtn) {
+
+  uploadBtn.addEventListener('click', async () => {
+
+    const file = resumeFile.files[0];
+
+    if (!file) {
+      alert("Please select a PDF file");
+      return;
+    }
+
+    const formData = new FormData();
+
+    formData.append("file", file);
+
+    try {
+         resumeScore.textContent = "Processing...";
+         quickScore.textContent = "...";
+
+         resumeResult.innerHTML = `
+           <div style="text-align:center;padding:20px;">
+             <h3>📄 Processing PDF Resume</h3>
+             <p>Extracting text and analyzing with AI...</p>
+           </div>
+         `;
+      const response = await fetch(
+        "http://localhost:8080/api/resume/upload",
+        {
+          method: "POST",
+          body: formData
+        }
+      );
+
+      const data = await response.json();
+
+      resumeScore.textContent =
+        `Score: ${data.atsScore}%`;
+
+      quickScore.textContent =
+        `${data.atsScore}%`;
+
+      wordCountEl.textContent =
+        data.wordCount;
+
+      resumeResult.innerHTML = `
+        <h3>Strengths</h3>
+        <ul>
+          ${data.strengths
+            .map(item => `<li>${item}</li>`)
+            .join("")}
+        </ul>
+
+        <h3>Weaknesses</h3>
+        <ul>
+          ${data.weaknesses
+            .map(item => `<li>${item}</li>`)
+            .join("")}
+        </ul>
+
+        <h3>Suggestions</h3>
+        <ul>
+          ${data.suggestions
+            .map(item => `<li>${item}</li>`)
+            .join("")}
+        </ul>
+      `;
+
+    } catch (error) {
+
+      console.error(error);
+
+      alert("PDF Upload Failed");
+
+    }
+
+  });
+
+}
+
+
 if (clearResume) {
   clearResume.addEventListener('click', () => {
     if (resumeInput) resumeInput.value = '';
@@ -187,6 +337,7 @@ if (clearResume) {
     if (quickScore) quickScore.textContent = '—%';
     if (resumeResult) resumeResult.innerHTML = '';
     if (wordCountEl) wordCountEl.textContent = '0';
+    if (resumeFile) resumeFile.value = '';
   });
 }
 if (resumeInput) {

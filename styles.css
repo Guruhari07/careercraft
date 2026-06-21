@@ -57,6 +57,22 @@ body {
   box-shadow: 0 12px 35px rgba(163, 36, 36, 0.45);
 }
 
+.loader {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #ddd;
+  border-top: 4px solid #8b4513;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 15px auto;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 .brand-text .title {
   font-weight: 800;
   font-size: 20px;
