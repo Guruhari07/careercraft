@@ -194,7 +194,7 @@ if (analyzeBtn) {
            </div>
          `;
       const response = await fetch(
-        "https://careercraft-iiol.onrender.com",
+        "https://careercraft-iiol.onrender.com/api/ai/resume-analysis",
         {
           method: "POST",
           headers: {
@@ -276,7 +276,7 @@ if (uploadBtn) {
            </div>
          `;
       const response = await fetch(
-        "https://careercraft-iiol.onrender.com",
+        "https://careercraft-iiol.onrender.com/api/ai/resume-analysis",
         {
           method: "POST",
           body: formData
