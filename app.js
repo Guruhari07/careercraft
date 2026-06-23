@@ -357,26 +357,88 @@ Projects: Built mobile apps for attendance and events.`;
   if (wordCountEl) wordCountEl.textContent = countWords(resumeInput.value);
 }
 
+
+
 /* -------------------------
    Job Keyword Finder
    ------------------------- */
 if (findBtn) {
-  findBtn.addEventListener('click', () => {
-    const q = (jobTitle && jobTitle.value || '').trim().toLowerCase();
-    if (!q) { if (keywordsResult) keywordsResult.innerHTML = `<div class="muted">Please enter a job title.</div>`; return; }
-    let match = JOB_KEYWORDS[q] || null;
-    if (!match) {
-      for (const k of Object.keys(JOB_KEYWORDS)) {
-        if (k.includes(q) || q.includes(k.split(' ')[0])) { match = JOB_KEYWORDS[k]; break; }
+
+  findBtn.addEventListener('click', async () => {
+
+    const q =
+      (jobTitle && jobTitle.value || '')
+        .trim();
+
+    if (!q) {
+
+      if (keywordsResult) {
+
+        keywordsResult.innerHTML =
+          `<div class="muted">
+             Please enter a job title.
+           </div>`;
       }
+
+      return;
     }
-    if (!match) { if (keywordsResult) keywordsResult.innerHTML = `<div class="muted">No data found for "<strong>${escapeHtml(q)}</strong>". Try "software engineer".</div>`; return; }
-    if (keywordsResult) {
+
+    keywordsResult.innerHTML = `
+      <div class="muted">
+        Finding keywords with AI...
+      </div>
+    `;
+
+    try {
+
+      const response =
+        await fetch(
+          "https://careercraft-iiol.onrender.com/api/keywords",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
+            body: JSON.stringify({
+              jobTitle: q
+            })
+          }
+        );
+
+      const data =
+        await response.json();
+
       keywordsResult.innerHTML = `
-        ${match.technical ? '<div style="font-weight:700">Technical</div><div class="tags">' + match.technical.map(t => `<span class="chip">${escapeHtml(t)}</span>`).join('') + '</div>' : ''}
-        ${match.tools ? '<div style="font-weight:700;margin-top:8px">Tools</div><div class="tags">' + match.tools.map(t => `<span class="chip">${escapeHtml(t)}</span>`).join('') + '</div>' : ''}
-        ${match.soft ? '<div style="font-weight:700;margin-top:8px">Soft skills</div><div class="tags">' + match.soft.map(t => `<span class="chip">${escapeHtml(t)}</span>`).join('') + '</div>' : ''}
-        <div class="muted" style="margin-top:8px">Tip: include top 3 technical skills & 2 tools for ATS match.</div>
+        <div style="font-weight:700">
+          Important Keywords
+        </div>
+
+        <div class="tags">
+          ${data.keywords
+            .map(
+              keyword =>
+                `<span class="chip">
+                   ${keyword}
+                 </span>`
+            )
+            .join("")}
+        </div>
+
+        <div class="muted"
+             style="margin-top:8px">
+          AI-generated ATS keywords
+        </div>
+      `;
+
+    } catch (error) {
+
+      console.error(error);
+
+      keywordsResult.innerHTML = `
+        <div class="muted">
+          Failed to fetch keywords
+        </div>
       `;
     }
   });
