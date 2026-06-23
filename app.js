@@ -427,7 +427,7 @@ if (findBtn) {
 
         <div class="muted"
              style="margin-top:8px">
-          AI-generated ATS keywords
+            These keywords can be used in your resume to improve ATS score.
         </div>
       `;
 
